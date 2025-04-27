@@ -13,7 +13,6 @@ const BookPage: React.FC = () => {
   useEffect(() => {
     async function fetchData() {
       if (!bookSlug) return;
-      
       try {
         const bookData = await getBookBySlug(bookSlug);
         setBook(bookData);
@@ -78,10 +77,10 @@ const BookPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               {book.title}
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-4">{book.titleCh}</p>
+            <p className="text-lg text-gray-600 mb-4">{book.titleCh}</p>
             <div className="flex items-center text-gray-500 mb-6">
               <BookOpen className="w-5 h-5 mr-2" />
-              <span className="text-base md:text-lg">{book.author}</span>
+              <span className="text-base">{book.author}</span>
             </div>
             <p className="text-gray-700 mb-6">{book.description}</p>
             {book.affiliateUrl && (
@@ -109,10 +108,10 @@ const BookPage: React.FC = () => {
               className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
             >
               <div>
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">
+                <h3 className="text-xl font-semibold text-gray-900">
                   {chapter.title}
                 </h3>
-                <p className="text-base md:text-lg text-gray-600">
+                <p className="text-base text-gray-600">
                   {chapter.titleCh}
                 </p>
               </div>
