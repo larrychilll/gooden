@@ -46,7 +46,7 @@ function App() {
                 <img
                   src="/GoodENBooks.png"
                   alt="Good EN Books Logo"
-                  className="h-6 w-auto mb-2"
+                  className="h-8 w-auto mb-2"
                 />
                 <div className="text-white">
                   © 2025 Good EN Books - 中英文書籍閱讀摘要
