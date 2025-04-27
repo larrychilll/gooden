@@ -34,7 +34,7 @@ const BookPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 space-y-8">
+      <div className="max-w-4xl mx-auto space-y-8">
         <div className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
           <div className="md:flex">
             <div className="md:w-1/3">
@@ -62,7 +62,7 @@ const BookPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 space-y-8 text-gray-800 text-lg leading-relaxed">
+    <div className="max-w-4xl mx-auto space-y-8">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="md:flex">
           <div className="md:w-1/3">
@@ -83,7 +83,7 @@ const BookPage: React.FC = () => {
               <BookOpen className="w-5 h-5 mr-2" />
               <span>{book.author}</span>
             </div>
-            <p className="mb-6">{book.description}</p>
+            <p className="text-gray-700 mb-6">{book.description}</p>
             {book.affiliateUrl && (
               <a
                 href={book.affiliateUrl}
@@ -109,10 +109,12 @@ const BookPage: React.FC = () => {
               className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
             >
               <div>
-                <h3 className="text-lg font-medium text-gray-900">
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">
                   {chapter.title}
                 </h3>
-                <p className="text-gray-600">{chapter.titleCh}</p>
+                <p className="text-base md:text-lg text-gray-600">
+                  {chapter.titleCh}
+                </p>
               </div>
               <ChevronRight className="w-5 h-5 text-gray-400" />
             </Link>
