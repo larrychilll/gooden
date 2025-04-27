@@ -22,7 +22,6 @@ const CategoryPage: React.FC = () => {
         const categoryBooks = allBooks.filter(book => book.categoryId === category.id);
         setBooks(categoryBooks);
 
-        // Fetch chapters for each book
         const chaptersData: Record<string, Chapter[]> = {};
         await Promise.all(
           categoryBooks.map(async (book) => {
@@ -125,8 +124,8 @@ const CategoryPage: React.FC = () => {
                       )}
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900">{book.title}</h2>
-                    <p className="text-gray-600 mb-2">{book.titleCh}</p>
-                    <div className="flex items-center text-gray-500 text-sm">
+                    <p className="text-lg md:text-xl text-gray-600 mb-2">{book.titleCh}</p>
+                    <div className="flex items-center text-gray-500 text-base md:text-lg">
                       <BookIcon className="w-4 h-4 mr-2" />
                       <span>{book.author}</span>
                     </div>
