@@ -7,7 +7,7 @@ export const books: Book[] = [
     titleEn: 'Atomic Habits',
     titleCh: '原子習慣',
     author: 'James Clear',
-    coverImage: 'https://images.pexels.com/photos/3747505/pexels-photo-3747505.jpeg',
+    coverImage: '/images/atomic-habits.png',
     categoryId: 'self-improvement',
     description: 'An easy and proven way to build good habits and break bad ones.',
     slug: 'atomic-habits',
