@@ -134,13 +134,9 @@ const ChapterPage: React.FC = () => {
               {/* Summary */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Summary</h3>
-                <div className="space-y-4">
-                  <div className="prose max-w-none">
-                    <p className="text-gray-800 whitespace-pre-wrap">{content.summary_en}</p>
-                  </div>
-                  <div className="prose max-w-none">
-                    <p className="text-gray-600 whitespace-pre-wrap">{content.summary_ch}</p>
-                  </div>
+                <div className="space-y-6">
+                  <p className="text-gray-800 text-[18px] whitespace-pre-wrap">{content.summary_en}</p>
+                  <p className="text-gray-600 text-[18px] whitespace-pre-wrap">{content.summary_ch}</p>
                 </div>
               </div>
 
@@ -148,11 +144,11 @@ const ChapterPage: React.FC = () => {
               {content.key_points && content.key_points.length > 0 && (
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Key Points</h3>
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {content.key_points.map((point, index) => (
                       <div key={index} className="border-l-4 border-indigo-500 pl-4">
-                        <p className="text-gray-800 whitespace-pre-wrap">{point.en}</p>
-                        <p className="text-gray-600 mt-1 whitespace-pre-wrap">{point.ch}</p>
+                        <p className="text-gray-800 text-[18px] whitespace-pre-wrap">{point.en}</p>
+                        <p className="text-gray-600 text-[18px] mt-1 whitespace-pre-wrap">{point.ch}</p>
                       </div>
                     ))}
                   </div>
@@ -170,9 +166,9 @@ const ChapterPage: React.FC = () => {
                           {item.word} <span className="text-gray-600">({item.translation})</span>
                         </h4>
                         {item.context && (
-                          <div className="mt-2 space-y-1">
-                            <p className="text-gray-800 whitespace-pre-wrap">{item.context.en}</p>
-                            <p className="text-gray-600 whitespace-pre-wrap">{item.context.ch}</p>
+                          <div className="mt-2 space-y-2">
+                            <p className="text-gray-800 text-[16px] whitespace-pre-wrap">{item.context.en}</p>
+                            <p className="text-gray-600 text-[16px] whitespace-pre-wrap">{item.context.ch}</p>
                           </div>
                         )}
                       </div>
