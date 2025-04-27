@@ -22,105 +22,104 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="h-24 bg-[#1F242C] flex items-center">
-      <div className="container mx-auto px-4 py-4">
-        <nav className="flex items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/GoodEnBooks.png" 
-              alt="Good EN Books Logo" 
-              className="h-10 w-auto object-contain"
-            />
-          </Link>
+    <header className="h-24 bg-[#1F242C] flex items-center relative">
+      <div className="container mx-auto px-4 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
+          <img 
+            src="/GoodEnBooks.png" 
+            alt="Good EN Books Logo" 
+            className="h-10 w-auto object-contain"
+          />
+        </Link>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={toggleMenu}
-            className="md:hidden p-2 text-white hover:text-[#FF9000]"
-            aria-label="Toggle menu"
+        {/* Mobile menu button */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden p-2 text-white hover:text-[#FF9000]"
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+
+        {/* Desktop navigation */}
+        <div className="hidden md:flex items-center space-x-8">
+          <Link 
+            to="/category/self-improvement" 
+            className={`transition-colors duration-200 ${
+              isActive('/self-growth') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
+            }`}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-
-          {/* Desktop navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link 
-              to="/category/self-improvement" 
-              className={`transition-colors duration-200 ${
-                isActive('/self-growth') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
-              }`}
-            >
-              自我成長
-            </Link>
-            <Link 
-              to="/category/business" 
-              className={`transition-colors duration-200 ${
-                isActive('/finance') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
-              }`}
-            >
-              商業金融
-            </Link>
-            <Link 
-              to="/category/relationships" 
-              className={`transition-colors duration-200 ${
-                isActive('/relationships') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
-              }`}
-            >
-              人際關係
-            </Link>
-            <Link 
-              to="/about" 
-              className={`transition-colors duration-200 ${
-                isActive('/about') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
-              }`}
-            >
-              About Us
-            </Link>
-          </div>
-        </nav>
-
-        {/* Mobile navigation */}
-        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} pt-4`}>
-          <div className="flex flex-col space-y-4">
-            <Link 
-              to="/category/self-improvement" 
-              className={`py-2 transition-colors duration-200 ${
-                isActive('/self-growth') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              自我成長
-            </Link>
-            <Link 
-              to="/category/business" 
-              className={`py-2 transition-colors duration-200 ${
-                isActive('/finance') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              商業金融
-            </Link>
-            <Link 
-              to="/category/relationships" 
-              className={`py-2 transition-colors duration-200 ${
-                isActive('/relationships') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              人際關係
-            </Link>
-            <Link 
-              to="/about" 
-              className={`py-2 transition-colors duration-200 ${
-                isActive('/about') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About Us
-            </Link>
-          </div>
+            自我成長
+          </Link>
+          <Link 
+            to="/category/business" 
+            className={`transition-colors duration-200 ${
+              isActive('/finance') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
+            }`}
+          >
+            商業金融
+          </Link>
+          <Link 
+            to="/category/relationships" 
+            className={`transition-colors duration-200 ${
+              isActive('/relationships') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
+            }`}
+          >
+            人際關係
+          </Link>
+          <Link 
+            to="/about" 
+            className={`transition-colors duration-200 ${
+              isActive('/about') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
+            }`}
+          >
+            About Us
+          </Link>
         </div>
       </div>
+
+      {/* Mobile navigation dropdown */}
+      {isMenuOpen && (
+        <div className="absolute top-24 left-0 w-full bg-[#1F242C] flex flex-col items-center space-y-6 py-6 z-50">
+          <Link 
+            to="/category/self-improvement"
+            className={`text-lg transition-colors duration-200 ${
+              isActive('/self-growth') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
+            }`}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            自我成長
+          </Link>
+          <Link 
+            to="/category/business"
+            className={`text-lg transition-colors duration-200 ${
+              isActive('/finance') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
+            }`}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            商業金融
+          </Link>
+          <Link 
+            to="/category/relationships"
+            className={`text-lg transition-colors duration-200 ${
+              isActive('/relationships') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
+            }`}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            人際關係
+          </Link>
+          <Link 
+            to="/about"
+            className={`text-lg transition-colors duration-200 ${
+              isActive('/about') ? 'text-[#FF9000]' : 'text-white hover:text-[#FF9000]'
+            }`}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            About Us
+          </Link>
+        </div>
+      )}
     </header>
   );
 };
