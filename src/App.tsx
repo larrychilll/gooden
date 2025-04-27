@@ -49,7 +49,7 @@ function App() {
                   className="h-8 w-auto mb-2"
                 />
                 <div className="text-white">
-                  © 2025 Good EN Books - 中英文書籍閱讀摘要
+                  © 2025 Good EN Books ｜ 精選優質英文書籍，附中英文摘要與學習內容
                 </div>
               </div>
             </div>
