@@ -103,20 +103,19 @@ const BookPage: React.FC = () => {
         <div className="space-y-4">
           {chapters.map((chapter) => (
             <Link
-              key={chapter.id}
-              to={`/book/${book.slug}/chapter/${chapter.slug}`}
-              className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900">
-                  {chapter.title}
-                </h3>
-                <p className="text-base text-gray-600">
-                  {chapter.titleCh}
-                </p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
-            </Link>
+            key={chapter.id}
+            to={`/book/${book.slug}/chapter/${chapter.slug}`}
+            className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+          >
+            <div>
+              <h3 className="text-lg font-medium text-gray-900">
+                {chapter.title}
+              </h3>
+              <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p> {/* ← Fix added */}
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </Link>
+          
           ))}
         </div>
       </div>
