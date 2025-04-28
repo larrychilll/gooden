@@ -158,7 +158,7 @@ const CategoryPage: React.FC = () => {
                         <h3 className="text-gray-900 font-medium">
                           {chapter.title}
                         </h3>
-                        <p className="text-gray-600 text-sm">{chapter.titleCh}</p>
+                        <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p>
                       </Link>
                     ))}
                   </div>
