@@ -23,7 +23,7 @@ const CategoryGrid: React.FC = () => {
               <h2 className="text-2xl font-bold text-white mb-2">
                 {category.name}
               </h2>
-              <p className="text-sm text-gray-200">
+              <p className="text-base text-gray-200">
                 {category.nameEn}
               </p>
             </div>
