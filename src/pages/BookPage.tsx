@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
-import { BookOpen, ChevronRight, ChevronDown, ShoppingCart } from 'lucide-react';
+import { BookOpen, ChevronRight, ShoppingCart } from 'lucide-react';
 
 const BookPage: React.FC = () => {
   const { bookSlug } = useParams();
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -99,16 +98,23 @@ const BookPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Add Chapter 0 */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <p className="text-lg font-bold text-gray-900">Chapter 0: Special Introduction</p>
-        <p className="text-gray-600">This is a test to see if Chapter 0 shows up.</p>
-      </div>
-
       {/* Chapters list */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
         <div className="space-y-4">
+          {/* Hardcoded Chapter 0 */}
+          <Link
+            to={`/book/${book.slug}/chapter/chapter0`}
+            className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+          >
+            <div>
+              <h3 className="text-lg font-medium text-gray-900">0. Chapter 0: Special Introduction</h3>
+              <p className="text-gray-600 text-[18px]">特別篇：前言導讀</p>
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </Link>
+
+          {/* Fetched Chapters */}
           {chapters.map((chapter) => (
             <Link
               key={chapter.id}
