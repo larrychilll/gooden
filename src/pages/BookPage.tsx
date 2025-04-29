@@ -10,7 +10,6 @@ const BookPage: React.FC = () => {
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);  // State to control the visibility of chapters on mobile
 
   useEffect(() => {
     async function fetchData() {
@@ -36,10 +35,6 @@ const BookPage: React.FC = () => {
     fetchData();
   }, [bookSlug]);
 
-  const toggleChapterVisibility = () => {
-    setIsExpanded(!isExpanded);  // Toggle the state to show/hide chapters
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -49,22 +44,61 @@ const BookPage: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>{book.title}</h1>
-      <div>
-        {/* Expandable toggle only on mobile */}
-        <div className="flex items-center justify-between md:hidden" onClick={toggleChapterVisibility}>
-          <h2 className="text-2xl font-bold">Chapters</h2>
-          {isExpanded ? (
-            <ChevronUp className="w-5 h-5 text-gray-500" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-gray-500" />
-          )}
+    <div className="max-w-4xl mx-auto space-y-8">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="md:flex">
+          <div className="md:w-1/3">
+            <div className="aspect-[2/3] overflow-hidden">
+              <img
+                src={book.coverImage}
+                alt={book.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <div className="p-6 md:w-2/3">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              {book.title}
+            </h1>
+            <p className="text-lg text-gray-600 mb-4">{book.titleCh}</p>
+            <div className="flex items-center text-gray-500 mb-6">
+              <BookOpen className="w-5 h-5 mr-2" />
+              <span className="text-base">{book.author}</span>
+            </div>
+            <p className="text-gray-700 mb-6">{book.description}</p>
+            {book.affiliateUrl && (
+              <a
+                href={book.affiliateUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-3 bg-[#FF9000] text-white rounded-lg hover:bg-[#FF7A00] transition-colors duration-200"
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Buy Book
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
+
+        {/* Mobile toggle visibility using checkbox */}
+        <div className="md:hidden">
+          <input type="checkbox" id="toggleChapters" className="hidden peer" />
+          <label
+            htmlFor="toggleChapters"
+            className="text-blue-500 cursor-pointer flex items-center justify-between mb-4"
+          >
+            <span className="text-lg">Show Chapters</span>
+            <ChevronDown className="w-5 h-5 text-gray-500 peer-checked:hidden" />
+            <ChevronUp className="w-5 h-5 text-gray-500 peer-checked:block hidden" />
+          </label>
         </div>
 
-        {/* Chapters list: hidden by default on mobile, always visible on desktop */}
-        <div className={`space-y-4 mt-4 ${isExpanded ? '' : 'hidden'} md:block`}>
-          {/* Chapters list */}
+        {/* Chapters list */}
+        <div className="space-y-4 mt-4">
           {chapters.map((chapter) => (
             <Link
               key={chapter.id}
