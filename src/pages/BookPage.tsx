@@ -9,10 +9,11 @@ const BookPage: React.FC = () => {
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isChaptersVisible, setIsChaptersVisible] = useState(true); // State for toggle
+  const [isChaptersVisible, setIsChaptersVisible] = useState(true);
 
   const toggleChapters = () => {
     setIsChaptersVisible(!isChaptersVisible);
+    console.log('Toggled chapters visibility:', !isChaptersVisible);
   };
 
   useEffect(() => {
@@ -35,6 +36,8 @@ const BookPage: React.FC = () => {
 
     fetchData();
   }, [bookSlug]);
+
+  console.log('Rendering BookPage, isChaptersVisible:', isChaptersVisible);
 
   if (loading) {
     return (
@@ -116,7 +119,7 @@ const BookPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Chapter list - hidden on mobile when toggled off */}
+        {/* Chapter list */}
         <div className={`${isChaptersVisible ? 'block' : 'hidden'} md:block space-y-4`}>
           {book && (
             <Link
