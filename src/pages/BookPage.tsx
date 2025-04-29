@@ -82,23 +82,22 @@ const BookPage: React.FC = () => {
             <div className="flex items-center text-gray-500 mb-6">
               <span className="text-base">{book.author}</span>
             </div>
-            
-            {/* Chevron Icon Below Author */}
-            <div className="md:hidden flex justify-center mb-6">
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="text-gray-700 hover:text-[#FF9000] transition-colors duration-200"
-                aria-label="Toggle chapters"
-              >
-                <ChevronDown
-                  className={`w-6 h-6 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                />
-              </button>
-            </div>
-
             <p className="text-gray-700 mb-6">{book.description}</p>
           </div>
         </div>
+      </div>
+
+      {/* Mobile Chevron Icon Only */}
+      <div className="md:hidden flex justify-center mb-6">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-gray-700 hover:text-[#FF9000] transition-colors duration-200"
+          aria-label="Toggle chapters"
+        >
+          <ChevronDown
+            className={`w-6 h-6 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+          />
+        </button>
       </div>
 
       {/* Chapter List */}
