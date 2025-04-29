@@ -2,13 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
-import { BookOpen, ChevronRight, ShoppingCart } from 'lucide-react';
+import { BookOpen, ChevronRight, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
 
 const BookPage: React.FC = () => {
-  const { bookSlug } = useParams();
+  const { bookSlug } = useParams<{ bookSlug: string }>();
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isChaptersVisible, setIsChaptersVisible] = useState(true); // State for toggle
+
+  const toggleChapters = () => {
+    setIsChaptersVisible(!isChaptersVisible);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -100,7 +105,19 @@ const BookPage: React.FC = () => {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
-        <div className="space-y-4">
+        {/* Mobile-only toggle button */}
+        <div className="block md:hidden mb-4">
+          <button
+            onClick={toggleChapters}
+            className="flex items-center justify-between w-full p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
+          >
+            <span className="text-lg font-medium text-gray-900">Chapters</span>
+            {isChaptersVisible ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </button>
+        </div>
+
+        {/* Chapter list - hidden on mobile when toggled off */}
+        <div className={`${isChaptersVisible ? 'block' : 'hidden'} md:block space-y-4`}>
           {book && (
             <Link
               to={`/book/${book.slug}/chapter/chapter0`}
