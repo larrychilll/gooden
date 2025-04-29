@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
-import { BookOpen, ChevronRight, ChevronDown, ShoppingCart } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const BookPage: React.FC = () => {
   const { bookSlug } = useParams();
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -80,59 +79,37 @@ const BookPage: React.FC = () => {
             </h1>
             <p className="text-lg text-gray-600 mb-4">{book.titleCh}</p>
             <div className="flex items-center text-gray-500 mb-6">
-              <BookOpen className="w-5 h-5 mr-2" />
               <span className="text-base">{book.author}</span>
             </div>
             <p className="text-gray-700 mb-6">{book.description}</p>
-            {book.affiliateUrl && (
-              <a
-                href={book.affiliateUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 bg-[#FF9000] text-white rounded-lg hover:bg-[#FF7A00] transition-colors duration-200"
-              >
-                <ShoppingCart className="w-5 h-5 mr-2" />
-                Buy Book
-              </a>
-            )}
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
+      {/* Display Chevron Icon only on mobile */}
+      <div className="md:hidden flex justify-end mt-4">
+        <button className="text-gray-700 hover:text-[#FF9000] transition-colors duration-200">
+          <ChevronDown className="w-6 h-6" />
+        </button>
+      </div>
 
-        {/* Mobile Expandable Chapters */}
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-          >
-            <span className="text-lg">Chapters</span>
-            <ChevronDown
-              className={`${isExpanded ? 'rotate-180' : 'rotate-0'} transform transition-all`}
-            />
-          </button>
-        </div>
-
-        <div className={`${isExpanded ? 'block' : 'hidden'} md:block`}>
-          <div className="space-y-4">
-            {chapters.map((chapter) => (
-              <Link
-                key={chapter.id}
-                to={`/book/${book.slug}/chapter/${chapter.slug}`}
-                className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-              >
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">
-                    {chapter.order}. {chapter.title}
-                  </h3>
-                  <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
-              </Link>
-            ))}
-          </div>
+      {/* Chapter List */}
+      <div className="mt-4">
+        <div className="space-y-4">
+          {chapters.map((chapter) => (
+            <Link
+              key={chapter.id}
+              to={`/book/${book.slug}/chapter/${chapter.slug}`}
+              className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+            >
+              <div>
+                <h3 className="text-lg font-medium text-gray-900">
+                  {chapter.order}. {chapter.title}
+                </h3>
+                <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
