@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
-import { BookOpen, ChevronRight, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
+import { BookOpen, ChevronRight, ChevronDown, ShoppingCart } from 'lucide-react';
 
 const BookPage: React.FC = () => {
   const { bookSlug } = useParams();
@@ -31,11 +31,6 @@ const BookPage: React.FC = () => {
 
     fetchData();
   }, [bookSlug]);
-
-  const toggleChapters = () => {
-    console.log('Toggling chapters, new state:', !isExpanded);
-    setIsExpanded(!isExpanded);
-  };
 
   if (loading) {
     return (
@@ -104,49 +99,42 @@ const BookPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Chapters list */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
+
+        {/* Mobile Expandable Chapters */}
         <div className="md:hidden">
           <button
-            onClick={toggleChapters}
-            className="text-blue-500 cursor-pointer flex items-center justify-between mb-4 w-full"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-md"
           >
-            <span className="text-lg">Show Chapters</span>
-            {isExpanded ? (
-              <ChevronUp className="w-5 h-5 text-gray-500" />
-            ) : (
-              <ChevronDown className="w-5 h-5 text-gray-500" />
-            )}
+            <span className="text-lg">Chapters</span>
+            <ChevronDown
+              className={`${isExpanded ? 'rotate-180' : 'rotate-0'} transform transition-all`}
+            />
           </button>
         </div>
 
-        <div className={`space-y-4 mt-4 ${isExpanded ? 'block' : 'hidden'} md:block`}>
-          {chapters.map((chapter) => (
-            <Link
-              key={chapter.id}
-              to={`/book/${book.slug}/chapter/${chapter.slug}`}
-              className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <div>
-                <h3 className="text-lg font-medium text-gray-900">
-                  {chapter.order}. {chapter.title}
-                </h3>
-                <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
-            </Link>
-          ))}
+        <div className={`${isExpanded ? 'block' : 'hidden'} md:block`}>
+          <div className="space-y-4">
+            {chapters.map((chapter) => (
+              <Link
+                key={chapter.id}
+                to={`/book/${book.slug}/chapter/${chapter.slug}`}
+                className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              >
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {chapter.order}. {chapter.title}
+                  </h3>
+                  <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-400" />
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
-
-      {/* Inline CSS for reliability */}
-      <style>
-        {`
-          .hidden { display: none; }
-          .block { display: block; }
-        `}
-      </style>
     </div>
   );
 };
