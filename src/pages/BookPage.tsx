@@ -9,7 +9,7 @@ const BookPage: React.FC = () => {
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true); // Start with true, so it's visible
 
   useEffect(() => {
     async function fetchData() {
@@ -87,22 +87,10 @@ const BookPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Add "Chapter 0" to act as the expandable section */}
-      <div className="bg-white rounded-lg shadow-md p-6 md:hidden">
-        <div
-          className={`space-y-4 ${isExpanded ? 'block' : 'hidden'}`}
-          style={{ height: isExpanded ? 'auto' : '0', overflow: 'hidden' }}
-        >
-          <div className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-            <div>
-              <h3 className="text-lg font-medium text-gray-900">Chapter 0 (Toggle)</h3>
-            </div>
-            <ChevronDown
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="w-6 h-6 text-gray-400 cursor-pointer"
-            />
-          </div>
-        </div>
+      {/* Always Visible Chapter 0 */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <p className="text-lg font-bold text-gray-900">Chapter 0: Special Introduction</p>
+        <p className="text-gray-600">This is the special introduction that is visible for now!</p>
       </div>
 
       {/* Chapter List */}
