@@ -87,17 +87,22 @@ const BookPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Chevron Icon Only */}
-      <div className="md:hidden flex justify-center mb-6">
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-gray-700 hover:text-[#FF9000] transition-colors duration-200"
-          aria-label="Toggle chapters"
+      {/* Add "Chapter 0" to act as the expandable section */}
+      <div className="bg-white rounded-lg shadow-md p-6 md:hidden">
+        <div
+          className={`space-y-4 ${isExpanded ? 'block' : 'hidden'}`}
+          style={{ height: isExpanded ? 'auto' : '0', overflow: 'hidden' }}
         >
-          <ChevronDown
-            className={`w-6 h-6 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-          />
-        </button>
+          <div className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+            <div>
+              <h3 className="text-lg font-medium text-gray-900">Chapter 0 (Toggle)</h3>
+            </div>
+            <ChevronDown
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="w-6 h-6 text-gray-400 cursor-pointer"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Chapter List */}
