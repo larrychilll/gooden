@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
-import { ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { BookOpen, ChevronRight, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
 
 const BookPage: React.FC = () => {
   const { bookSlug } = useParams();
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);  // State to control the expand/collapse of chapters
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -20,7 +20,7 @@ const BookPage: React.FC = () => {
 
         if (bookData) {
           const chaptersData = await getChaptersByBookId(bookData.id);
-          setChapters(chaptersData.sort((a, b) => a.order - b.order));  // Sort chapters by order
+          setChapters(chaptersData.sort((a, b) => a.order - b.order));
         }
       } catch (error) {
         console.error('Error fetching book data:', error);
@@ -32,8 +32,8 @@ const BookPage: React.FC = () => {
     fetchData();
   }, [bookSlug]);
 
-  // Function to toggle chapters visibility
   const toggleChapters = () => {
+    console.log('Toggling chapters, new state:', !isExpanded);
     setIsExpanded(!isExpanded);
   };
 
@@ -107,12 +107,10 @@ const BookPage: React.FC = () => {
       {/* Chapters list */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
-
-        {/* Mobile toggle visibility using checkbox */}
         <div className="md:hidden">
           <button
             onClick={toggleChapters}
-            className="text-blue-500 cursor-pointer flex items-center justify-between mb-4"
+            className="text-blue-500 cursor-pointer flex items-center justify-between mb-4 w-full"
           >
             <span className="text-lg">Show Chapters</span>
             {isExpanded ? (
@@ -123,8 +121,7 @@ const BookPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Chapters will show/hide based on isExpanded */}
-        <div className={`space-y-4 mt-4 ${isExpanded ? 'block' : 'hidden'}`}>
+        <div className={`space-y-4 mt-4 ${isExpanded ? 'block' : 'hidden'} md:block`}>
           {chapters.map((chapter) => (
             <Link
               key={chapter.id}
@@ -142,6 +139,14 @@ const BookPage: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Inline CSS for reliability */}
+      <style>
+        {`
+          .hidden { display: none; }
+          .block { display: block; }
+        `}
+      </style>
     </div>
   );
 };
