@@ -1,32 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
-import { fetchBooks } from '../data/books';  // Fetch books dynamically from Supabase
-import { fetchChapters } from '../data/chapters';  // Fetch chapters dynamically from Supabase
-import { BookOpen, ChevronRight, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
+import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
+import { ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
 
 const BookPage: React.FC = () => {
   const { bookSlug } = useParams();
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);  // State to control the expand/collapse of chapters
 
   useEffect(() => {
     async function fetchData() {
       if (!bookSlug) return;
       try {
-        // Fetch the book details dynamically
-        const booksData = await fetchBooks();
-        const selectedBook = booksData.find((b) => b.slug === bookSlug);
-        setBook(selectedBook);
+        const bookData = await getBookBySlug(bookSlug);
+        setBook(bookData);
 
-        if (selectedBook) {
-          // Fetch chapters based on the book_id dynamically
-          const chaptersData = await fetchChapters(selectedBook.id);
+        if (bookData) {
+          const chaptersData = await getChaptersByBookId(bookData.id);
           setChapters(chaptersData.sort((a, b) => a.order - b.order));  // Sort chapters by order
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching book data:', error);
       } finally {
         setLoading(false);
       }
@@ -35,12 +32,38 @@ const BookPage: React.FC = () => {
     fetchData();
   }, [bookSlug]);
 
+  // Function to toggle chapters visibility
+  const toggleChapters = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="max-w-4xl mx-auto space-y-8">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+          <div className="md:flex">
+            <div className="md:w-1/3">
+              <div className="aspect-[2/3] bg-gray-200"></div>
+            </div>
+            <div className="p-6 md:w-2/3 space-y-4">
+              <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+              <div className="h-20 bg-gray-200 rounded"></div>
+              <div className="h-10 bg-gray-200 rounded w-1/3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!book) {
-    return <div>Book not found</div>;
+    return (
+      <div className="text-center py-12">
+        <h2 className="text-2xl font-bold text-gray-900">Book not found</h2>
+      </div>
+    );
   }
 
   return (
@@ -81,24 +104,27 @@ const BookPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Chapters list */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
 
         {/* Mobile toggle visibility using checkbox */}
         <div className="md:hidden">
-          <input type="checkbox" id="toggleChapters" className="hidden peer" />
-          <label
-            htmlFor="toggleChapters"
+          <button
+            onClick={toggleChapters}
             className="text-blue-500 cursor-pointer flex items-center justify-between mb-4"
           >
             <span className="text-lg">Show Chapters</span>
-            <ChevronDown className="w-5 h-5 text-gray-500 peer-checked:hidden" />
-            <ChevronUp className="w-5 h-5 text-gray-500 peer-checked:block hidden" />
-          </label>
+            {isExpanded ? (
+              <ChevronUp className="w-5 h-5 text-gray-500" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-500" />
+            )}
+          </button>
         </div>
 
-        {/* Chapters list */}
-        <div className="space-y-4 mt-4">
+        {/* Chapters will show/hide based on isExpanded */}
+        <div className={`space-y-4 mt-4 ${isExpanded ? 'block' : 'hidden'}`}>
           {chapters.map((chapter) => (
             <Link
               key={chapter.id}
