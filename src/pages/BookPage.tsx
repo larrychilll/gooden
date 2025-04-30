@@ -118,7 +118,8 @@ const BookPage: React.FC = () => {
       </div>
 
       {/* Chapter list block — hidden on mobile unless toggled */}
-      <div className={`space-y-4 ${isChaptersVisible ? 'block' : 'hidden'} md:block bg-white rounded-lg shadow-md p-6`}>
+      <div className={`space-y-4 ${isChaptersVisible ? 'block' : 'hidden'} md:block bg-white rounded-lg shadow-md p-6 transition-all duration-300 ease-in-out`}>
+  {/* Add transition classes here */}
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
 
         {book && (
