@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, RequireAuth } from './lib/auth';
 import HomePage from './pages/HomePage';
@@ -8,21 +7,21 @@ import CategoryPage from './pages/CategoryPage';
 import AboutPage from './pages/AboutPage';
 import AdminPage from './pages/AdminPage';
 import LoginPage from './pages/LoginPage';
-import Header from './components/Header'; // <--- make sure you have a Header component
+import Header from './components/Header';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <div className="flex flex-col min-h-screen bg-gray-50">
-          <Header /> {/* ✅ Move Header outside main */}
+          <Header />
           <main className="flex-1">
             <div className="container mx-auto px-4 py-8">
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/category/:categorySlug" element={<CategoryPage />} />
-                <Route path="/book/:bookSlug" element={<BookPage />} />
-                <Route path="/book/:bookSlug/chapter/:chapterSlug" element={<ChapterPage />} />
+                <Route path="/category/:categorySlug/book/:bookSlug" element={<BookPage />} />
+                <Route path="/category/:categorySlug/book/:bookSlug/chapter/:chapterSlug" element={<ChapterPage />} />
                 <Route path="/self-growth" element={<CategoryPage />} />
                 <Route path="/finance" element={<CategoryPage />} />
                 <Route path="/relationships" element={<CategoryPage />} />
@@ -43,11 +42,11 @@ function App() {
           <footer className="bg-[#1F242C] py-6">
             <div className="container mx-auto px-4">
               <div className="flex flex-col items-start">
-              <img
-  src="https://nvroqnmqwvhvrbjyuyhr.supabase.co/storage/v1/object/public/assets/site/GoodEnBooks.png"
-  alt="Good EN Books Logo"
-  className="h-8 w-auto mb-2"
-/>
+                <img
+                  src="https://nvroqnmqwvhvrbjyuyhr.supabase.co/storage/v1/object/public/assets/site/GoodEnBooks.png"
+                  alt="Good EN Books Logo"
+                  className="h-8 w-auto mb-2"
+                />
                 <div className="text-white">
                   © 2025 Good EN Books ｜ 精選優質英文書籍，附中英文摘要與學習內容
                 </div>

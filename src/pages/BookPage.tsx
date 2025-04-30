@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'; // Removed unused React import
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
 import { BookOpen, ChevronRight, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
 
 const BookPage: React.FC = () => {
-  const { bookSlug } = useParams<{ bookSlug: string }>();
+  const { bookSlug, categorySlug } = useParams<{ bookSlug: string; categorySlug: string }>();
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
@@ -108,7 +108,6 @@ const BookPage: React.FC = () => {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
-        {/* Mobile-only toggle button */}
         <div className="block md:hidden mb-4">
           <button
             onClick={toggleChapters}
@@ -119,11 +118,10 @@ const BookPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Chapter list */}
         <div className={`${isChaptersVisible ? 'block' : 'hidden'} md:block space-y-4`}>
           {book && (
             <Link
-              to={`/book/${book.slug}/chapter/chapter0`}
+              to={`/category/${categorySlug}/book/${book.slug}/chapter/chapter0`}
               className="block p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
               style={{ backgroundColor: '#fff8dc' }}
             >
@@ -137,7 +135,7 @@ const BookPage: React.FC = () => {
           {chapters.map((chapter) => (
             <Link
               key={chapter.id}
-              to={`/book/${book.slug}/chapter/${chapter.slug}`}
+              to={`/category/${categorySlug}/book/${book.slug}/chapter/${chapter.slug}`}
               className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
             >
               <div>
