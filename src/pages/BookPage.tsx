@@ -89,6 +89,8 @@ const BookPage: React.FC = () => {
               <span className="text-base">{book.author}</span>
             </div>
 
+            console.log('Toggled chapters visibility:', !isChaptersVisible);
+
             {/* Mobile toggle button below author */}
             <div className="block md:hidden mb-4">
               <button
