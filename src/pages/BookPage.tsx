@@ -9,7 +9,7 @@ const BookPage: React.FC = () => {
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isChaptersVisible, setIsChaptersVisible] = useState(true);
+  const [isChaptersVisible, setIsChaptersVisible] = useState(false);
 
   const toggleChapters = () => {
     setIsChaptersVisible(!isChaptersVisible);
@@ -36,8 +36,6 @@ const BookPage: React.FC = () => {
 
     fetchData();
   }, [bookSlug]);
-
-  console.log('Rendering BookPage, isChaptersVisible:', isChaptersVisible);
 
   if (loading) {
     return (
@@ -90,7 +88,20 @@ const BookPage: React.FC = () => {
               <BookOpen className="w-5 h-5 mr-2" />
               <span className="text-base">{book.author}</span>
             </div>
-            <p className="text-gray-700 mb-6">{book.description}</p>
+
+            {/* Mobile toggle button below author */}
+            <div className="block md:hidden mb-4">
+              <button
+                onClick={toggleChapters}
+                className="flex items-center justify-between w-full p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-200 bg-gray-100"
+              >
+                <span className="text-lg font-medium text-gray-900">
+                  {isChaptersVisible ? 'Hide Chapters' : 'Show Chapters'}
+                </span>
+                {isChaptersVisible ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </button>
+            </div>
+
             {book.affiliateUrl && (
               <a
                 href={book.affiliateUrl}
@@ -106,36 +117,11 @@ const BookPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        {/* Toggle button in the green area */}
-        <div
-          style={{ display: 'block' }} // Fallback inline style
-          className="block md:hidden mb-4"
-        >
-          <button
-            onClick={toggleChapters}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',
-              padding: '1rem',
-              borderRadius: '0.5rem',
-              border: '1px solid #e5e7eb',
-              backgroundColor: '#f9fafb',
-            }}
-            className="flex items-center justify-between w-full p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
-          >
-            <span className="text-lg font-medium text-gray-900">Chapters</span>
-            {isChaptersVisible ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </button>
-        </div>
+      {/* Chapters block */}
+      {(isChaptersVisible || window.innerWidth >= 768) && (
+        <div className="bg-white rounded-lg shadow-md p-6 md:block">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
 
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
-        <div
-          style={{ display: isChaptersVisible ? 'block' : 'none' }} // Fallback inline style
-          className={`${isChaptersVisible ? 'block' : 'hidden'} md:block space-y-4`}
-        >
           {book && (
             <Link
               to={`/category/${categorySlug}/book/${book.slug}/chapter/chapter0`}
@@ -165,7 +151,7 @@ const BookPage: React.FC = () => {
             </Link>
           ))}
         </div>
-      </div>
+      )}
     </div>
   );
 };
