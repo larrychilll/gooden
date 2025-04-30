@@ -85,6 +85,9 @@ const BookPage: React.FC = () => {
               <BookOpen className="w-5 h-5 mr-2" />
               <span className="text-base">{book.author}</span>
             </div>
+            <div className="bg-green-100 p-4 md:hidden">
+              <p className="text-center text-gray-900 font-bold">✅ MOBILE TOGGLE ZONE</p>
+            </div>
 
             {/* Mobile toggle for chapters */}
             <div
