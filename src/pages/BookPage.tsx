@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'; // Removed unused React import
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
@@ -107,10 +107,23 @@ const BookPage: React.FC = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
-        <div className="block md:hidden mb-4">
+        {/* Toggle button in the green area */}
+        <div
+          style={{ display: 'block' }} // Fallback inline style
+          className="block md:hidden mb-4"
+        >
           <button
             onClick={toggleChapters}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              padding: '1rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #e5e7eb',
+              backgroundColor: '#f9fafb',
+            }}
             className="flex items-center justify-between w-full p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
           >
             <span className="text-lg font-medium text-gray-900">Chapters</span>
@@ -118,7 +131,11 @@ const BookPage: React.FC = () => {
           </button>
         </div>
 
-        <div className={`${isChaptersVisible ? 'block' : 'hidden'} md:block space-y-4`}>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
+        <div
+          style={{ display: isChaptersVisible ? 'block' : 'none' }} // Fallback inline style
+          className={`${isChaptersVisible ? 'block' : 'hidden'} md:block space-y-4`}
+        >
           {book && (
             <Link
               to={`/category/${categorySlug}/book/${book.slug}/chapter/chapter0`}
