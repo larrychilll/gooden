@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
-import { BookOpen, ChevronRight, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
+import { BookOpen, ChevronRight, ChevronDown, ChevronUp, ShoppingCart } from 'lucide-react';
 
 const BookPage: React.FC = () => {
   const { bookSlug, categorySlug } = useParams<{ bookSlug: string; categorySlug: string }>();
@@ -13,7 +13,6 @@ const BookPage: React.FC = () => {
 
   const toggleChapters = () => {
     setIsChaptersVisible(!isChaptersVisible);
-    console.log('Toggled chapters visibility:', !isChaptersVisible);
   };
 
   useEffect(() => {
@@ -80,28 +79,21 @@ const BookPage: React.FC = () => {
             </div>
           </div>
           <div className="p-6 md:w-2/3">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {book.title}
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{book.title}</h1>
             <p className="text-lg text-gray-600 mb-4">{book.titleCh}</p>
             <div className="flex items-center text-gray-500 mb-6">
               <BookOpen className="w-5 h-5 mr-2" />
               <span className="text-base">{book.author}</span>
             </div>
 
-            console.log('Toggled chapters visibility:', !isChaptersVisible);
-
-            {/* Mobile toggle button below author */}
-            <div className="block md:hidden mb-4">
-              <button
-                onClick={toggleChapters}
-                className="flex items-center justify-between w-full p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-200 bg-gray-100"
-              >
-                <span className="text-lg font-medium text-gray-900">
-                  {isChaptersVisible ? 'Hide Chapters' : 'Show Chapters'}
-                </span>
-                {isChaptersVisible ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-              </button>
+            {/* Toggle button – only shown on mobile */}
+            <div className="md:hidden flex items-center gap-2 py-2 cursor-pointer font-medium text-gray-800 border rounded px-4 mb-4 bg-gray-100" onClick={toggleChapters}>
+              {isChaptersVisible ? (
+                <ChevronDown className="h-5 w-5 text-amber-600" />
+              ) : (
+                <ChevronRight className="h-5 w-5 text-amber-600" />
+              )}
+              <span>章節摘要</span>
             </div>
 
             {book.affiliateUrl && (
@@ -119,41 +111,40 @@ const BookPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Chapters block */}
-      {(isChaptersVisible || window.innerWidth >= 768) && (
-        <div className="bg-white rounded-lg shadow-md p-6 md:block">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
+      {/* Chapters Section */}
+      <div className={`${isChaptersVisible ? 'block' : 'hidden'} md:block bg-white rounded-lg shadow-md p-6`}>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
 
-          {book && (
-            <Link
-              to={`/category/${categorySlug}/book/${book.slug}/chapter/chapter0`}
-              className="block p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
-              style={{ backgroundColor: '#fff8dc' }}
-            >
+        {/* Optional Chapter 0 */}
+        {book && (
+          <Link
+            to={`/category/${categorySlug}/book/${book.slug}/chapter/chapter0`}
+            className="block p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
+            style={{ backgroundColor: '#fff8dc' }}
+          >
+            <h3 className="text-lg font-medium text-gray-900">
+              0. Chapter 0: Special Introduction
+            </h3>
+            <p className="text-gray-600 text-[18px]">特別篇：前言導讀</p>
+          </Link>
+        )}
+
+        {chapters.map((chapter) => (
+          <Link
+            key={chapter.id}
+            to={`/category/${categorySlug}/book/${book.slug}/chapter/${chapter.slug}`}
+            className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+          >
+            <div>
               <h3 className="text-lg font-medium text-gray-900">
-                0. Chapter 0: Special Introduction
+                {chapter.order}. {chapter.title}
               </h3>
-              <p className="text-gray-600 text-[18px]">特別篇：前言導讀</p>
-            </Link>
-          )}
-
-          {chapters.map((chapter) => (
-            <Link
-              key={chapter.id}
-              to={`/category/${categorySlug}/book/${book.slug}/chapter/${chapter.slug}`}
-              className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <div>
-                <h3 className="text-lg font-medium text-gray-900">
-                  {chapter.order}. {chapter.title}
-                </h3>
-                <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
-            </Link>
-          ))}
-        </div>
-      )}
+              <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p>
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };
