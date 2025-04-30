@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Book, Chapter } from '../types';
 import { getBookBySlug, getChaptersByBookId } from '../services/supabase';
-import { BookOpen, ChevronRight, ChevronDown, ChevronUp, ShoppingCart } from 'lucide-react';
+import { BookOpen, ChevronRight, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
 
 const BookPage: React.FC = () => {
   const { bookSlug, categorySlug } = useParams<{ bookSlug: string; categorySlug: string }>();
   const [book, setBook] = useState<Book | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isChaptersVisible, setIsChaptersVisible] = useState(false);
+  const [isChaptersVisible, setIsChaptersVisible] = useState(true);
 
   const toggleChapters = () => {
     setIsChaptersVisible(!isChaptersVisible);
@@ -86,8 +86,11 @@ const BookPage: React.FC = () => {
               <span className="text-base">{book.author}</span>
             </div>
 
-            {/* Toggle button – only shown on mobile */}
-            <div className="md:hidden flex items-center gap-2 py-2 cursor-pointer font-medium text-gray-800 border rounded px-4 mb-4 bg-gray-100" onClick={toggleChapters}>
+            {/* Mobile toggle for chapters */}
+            <div
+              className="md:hidden flex items-center gap-2 py-2 cursor-pointer font-medium text-gray-800 border rounded px-4 mb-4 bg-gray-100"
+              onClick={toggleChapters}
+            >
               {isChaptersVisible ? (
                 <ChevronDown className="h-5 w-5 text-amber-600" />
               ) : (
@@ -111,11 +114,10 @@ const BookPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Chapters Section */}
-      <div className={`${isChaptersVisible ? 'block' : 'hidden'} md:block bg-white rounded-lg shadow-md p-6`}>
+      {/* Chapter list block — hidden on mobile unless toggled */}
+      <div className={`space-y-4 ${isChaptersVisible ? 'block' : 'hidden'} md:block bg-white rounded-lg shadow-md p-6`}>
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
 
-        {/* Optional Chapter 0 */}
         {book && (
           <Link
             to={`/category/${categorySlug}/book/${book.slug}/chapter/chapter0`}
