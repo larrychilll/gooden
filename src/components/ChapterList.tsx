@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
-import { Chapter } from '../types';
+import { ChapterType } from '../types';
 
 interface ChapterListProps {
-  chapters: Chapter[];
+  chapters: ChapterType[];
 }
 
 export const ChapterList: React.FC<ChapterListProps> = ({ chapters }) => {
-  const { categorySlug, bookSlug } = useParams<{ categorySlug: string; bookSlug: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
 
+  useEffect(() => {
+    console.log("✅ ChapterList mounted — screen width:", window.innerWidth);
+  }, []);
+
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
+    console.log("🔁 Toggle clicked");
+    setIsExpanded((prev) => !prev);
   };
 
   return (
-    <div className="space-y-4 bg-white rounded-lg shadow-md p-6">
+    <div className="border border-green-300 p-4">
       <div
-        className="md:hidden flex items-center gap-2 py-2 cursor-pointer font-medium text-gray-800"
+        className="md:hidden flex items-center gap-2 py-2 cursor-pointer font-medium bg-yellow-100 border border-red-500"
         onClick={toggleExpand}
       >
         {isExpanded ? (
@@ -26,27 +29,23 @@ export const ChapterList: React.FC<ChapterListProps> = ({ chapters }) => {
         ) : (
           <ChevronRight className="h-5 w-5 text-amber-600" />
         )}
-        <span>章節摘要</span>
+        <span>Chapter List (Toggle)</span>
       </div>
 
       <div
-        className={`space-y-4 ${isExpanded ? 'block' : 'hidden'} md:block transition-all duration-300 ease-in-out`}
+        className={`grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-3 ${
+          isExpanded ? 'block' : 'hidden md:grid'
+        } transition-all duration-300`}
       >
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Chapters</h2>
         {chapters.map((chapter) => (
-          <Link
-            key={chapter.id}
-            to={`/category/${categorySlug}/book/${bookSlug}/chapter/${chapter.slug}`}
-            className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-          >
-            <div>
-              <h3 className="text-lg font-medium text-gray-900">
-                {chapter.order}. {chapter.title}
-              </h3>
-              <p className="text-gray-600 text-[18px]">{chapter.titleCh}</p>
+          <div key={chapter.id} className="border-b border-gray-200 pb-3">
+            <div className="font-medium">
+              {chapter.number}. {chapter.title}
             </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </Link>
+            {chapter.translatedTitle && (
+              <div className="text-gray-600 text-sm">{chapter.translatedTitle}</div>
+            )}
+          </div>
         ))}
       </div>
     </div>
